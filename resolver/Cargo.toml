@@ -1,0 +1,7 @@
+[package]
+name = "resolver"
+version = "0.1.0"
+authors = ["Martin Sehnoutka <msehnout@redhat.com>"]
+
+[dependencies]
+trust-dns-resolver = { version = "^0.9", features = ["dns-over-rustls"] }
