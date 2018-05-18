@@ -1,0 +1,13 @@
+[package]
+name = "dns-roadblock-tests"
+version = "0.1.0"
+authors = ["Martin Sehnoutka <msehnout@redhat.com>"]
+
+[dependencies]
+trust-dns = "^0.13"
+trust-dns-proto = "*"
+futures = "*"
+failure = "0.1.1"
+# failure_derive = "0.1.1"
+lazy_static = "1.0"
+tokio-core = "^0.1"
