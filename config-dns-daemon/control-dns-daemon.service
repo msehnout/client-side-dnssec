@@ -1,0 +1,13 @@
+[Unit]
+Description=Reconfigure local DNSSEC resolver on connectivity changes
+After=NetworkManager.service kresd@1.service
+Requires=kresd@1.service
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/local/bin/config-dns-daemon --socket=/var/run/config-dns-daemon/control
+ExecStartPost=/usr/local/libexec/config-dns-prepare.py
+
+[Install]
+WantedBy=multi-user.target
