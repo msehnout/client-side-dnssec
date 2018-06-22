@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ -x /usr/local/libexec/config-dns-prepare.py ]; then
+    exec /usr/local/libexec/config-dns-prepare.py
+fi
+

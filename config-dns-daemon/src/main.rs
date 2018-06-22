@@ -57,6 +57,8 @@ fn handle_control_connection(stream: UnixStream) -> Result<String, Error> {
 }
 
 fn run_control_socket(socket_path: &str) -> Result<(), Error> {
+    info!("Removing socket at path: {}", socket_path);
+    std::fs::remove_file(socket_path)?;
     info!("Starting socket at path: {}", socket_path);
     let listener = UnixListener::bind(socket_path)?;
     for stream in listener.incoming() {

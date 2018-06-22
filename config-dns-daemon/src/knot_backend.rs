@@ -42,3 +42,5 @@ pub fn apply_rules(fwd_zones: Vec<ForwardZone>, reverse_zones: Vec<ReverseZone>)
 
     Ok(())
 }
+
+// TODO: remove all rules
