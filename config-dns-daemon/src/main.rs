@@ -2,6 +2,7 @@ extern crate docopt;
 extern crate env_logger;
 extern crate failure;
 #[macro_use] extern crate log;
+extern crate regex;
 #[macro_use] extern crate serde_derive;
 extern crate serde_json;
 
@@ -58,7 +59,7 @@ fn handle_control_connection(stream: UnixStream) -> Result<String, Error> {
 
 fn run_control_socket(socket_path: &str) -> Result<(), Error> {
     info!("Removing socket at path: {}", socket_path);
-    std::fs::remove_file(socket_path)?;
+    let _ = std::fs::remove_file(socket_path);
     info!("Starting socket at path: {}", socket_path);
     let listener = UnixListener::bind(socket_path)?;
     for stream in listener.incoming() {
@@ -73,8 +74,11 @@ fn run_control_socket(socket_path: &str) -> Result<(), Error> {
                             let reverse_zones = get_reverse_zones(&connections);
                             info!("Forward zones: {:?}", fwd_zones);
                             info!("Reverse zones: {:?}", reverse_zones);
-                            if let Err(e) = apply_rules(fwd_zones, reverse_zones){
-                                error!("Failed to apply forwarding rules to the resolver: {}", e)
+                            if let Err(e) = remove_all_rules() {
+                                error!("Failed to remove old rules from the resolver: {}", e);
+                            }
+                            if let Err(e) = apply_rules(fwd_zones, reverse_zones) {
+                                error!("Failed to apply forwarding rules to the resolver: {}", e);
                             }
                         } else {
                             error!("Could not parse control input.");
@@ -85,7 +89,7 @@ fn run_control_socket(socket_path: &str) -> Result<(), Error> {
             }
             Err(_err) => {
                 /* connection failed */
-                error!("Connection failed! Trying the next one")
+                error!("Connection failed! Trying the next one");
             }
         }
     }
