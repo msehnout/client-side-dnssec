@@ -4,3 +4,4 @@
  * dns roadblock tests - attempt to implement RFC 8027 with Trust DNS API
  * NM\* - automatically generated API binding for NetworkManager. It uses GI repository.
  * scripts - so far only NM connection dump
+ * dbus-connection - example of Rust code, that connects to NetworkManager over D-Bus
