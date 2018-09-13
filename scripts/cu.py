@@ -23,6 +23,8 @@ def get_connections():
         if "virbr" in id or "docker" in id:
             continue
         cfg = c.get_ip4_config()
+        if cfg is None:
+            continue
         addr = [(x.get_address(), x.get_prefix()) for x in cfg.get_addresses()]
         new_conn = {}
         new_conn['id'] = id
