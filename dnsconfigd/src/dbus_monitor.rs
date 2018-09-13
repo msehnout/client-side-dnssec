@@ -55,12 +55,18 @@ impl DbusMonitor {
     }
 
     fn query_network_manager(&self, numbers: Vec<u32>) -> Connections {
+        use std::{thread, time};
+
+        // FIXME: There is something REALLY SLOW in this system.
+        // Unless you wait for at least this amount of time, new connections won't have
+        // ip4config object available. Is it DHCP or NetworkManager? Would it be better
+        // just to write this part of code in NetworkManager and just send it in a single
+        // signal?
+        thread::sleep(time::Duration::from_millis(1500));
+
         // So why on earth am I using the filter_map ??
         // Well as it turns out, when a connection is removed Network Manager sends a signal with a
         // list of old connections. So one of them will fail to inspect.
-        use std::{thread, time};
-
-        thread::sleep(time::Duration::from_millis(1500));
         let con = numbers.iter().filter_map(|i| {
             let p = self.connection.with_path("org.freedesktop.NetworkManager",
                                               format!("/org/freedesktop/NetworkManager/ActiveConnection/{}", i),
